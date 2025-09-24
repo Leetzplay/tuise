@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestão de Pessoas</title>
+  <link rel="icon" href="tuiselogo.png" type="image/x-icon" />
+  <link rel="stylesheet" href="style.css">
+  <style>
+/* ===== BACKGROUND PC ===== */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: url('gestaodepessoasfundo.png') no-repeat center top;
+  background-size: cover;
+  background-attachment: fixed; /* mantém fixo no desktop */
+}
+
+/* ===== BACKGROUND MOBILE ===== */
+@media (max-width: 768px) {
+  body {
+    background: url('gestaodepessoasfundomb.png') no-repeat center top;
+    background-size: cover;       /* cobre toda a tela */
+    background-attachment: scroll; /* acompanha o conteúdo ao rolar */
+    background-color: #f5f5f5;    /* fallback atrás da imagem */
+  }
+}
+
+/* CONTENT BOX */
+.content-box {
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 20px auto;
+  margin-top: 200px;
+}
+
+/* SIDEBAR DIREITA */
+.sidebar {
+  width: 300px;
+  background-color: #7AA8D5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 10px 10px;
+  position: fixed;
+  right: 0;
+  top: 0;
+  height: 100vh;
+  transition: transform 0.3s ease;
+  z-index: 1000;
+}
+
+nav a {
+  display: block;
+  text-decoration: none;
+  background: #ECF8F8;
+  color: #5A6B9E;
+  padding: 15px;
+  margin: 10px auto;
+  width: 90%;
+  text-align: center;
+  border-radius: 30px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  font-size: 20px;
+}
+nav a:hover {
+  background: #cbe8e8;
+  transform: translateX(5px);
+}
+
+/* MENU LATERAL ESQUERDA */
+.left-menu {
+  width: 220px;
+  background-color: #f1f1f1;
+  border-right: 2px solid #ddd;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 94.1vh;
+  padding-top: 80px;
+  z-index: 900;
+}
+.left-menu h3 {
+  text-align: center;
+  color: #5A6B9E;
+  margin-bottom: 20px;
+}
+.left-menu a {
+  display: block;
+  padding: 12px 20px;
+  color: #5A6B9E;
+  text-decoration: none;
+  border-bottom: 1px solid #ddd;
+}
+.left-menu a:hover {
+  background: #e3e3e3;
+}
+
+/* APRESENTAÇÃO */
+.presentation {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+.presentation-text { flex: 1; }
+.presentation img {
+  max-width: 300px;
+  border-radius: 10px;
+}
+
+/* BOTÃO PDF */
+.download-btn {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 12px 25px;
+  background: #5A6B9E;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 16px;
+}
+.download-btn:hover { background: #3e4f7a; }
+
+    /* FOOTER */
+    footer {
+      padding: 12px;
+      background: rgba(255,255,255,0.85);
+      position: fixed;
+      bottom: 0;
+      width: calc(100% - 300px);
+      z-index: 1;
+      font-size: 14px;
+      color: #333;
+    }
+
+    .footer-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: nowrap;
+    }
+
+    .footer-left, .footer-center, .footer-right {
+      flex: 1;
+      padding: 0 10px;
+    }
+
+    .footer-left {
+      text-align: left;
+    }
+
+    .footer-center {
+      text-align: center;
+    }
+
+    .footer-right {
+      text-align: right;
+    }
+
+    .footer-social a {
+      margin: 0 6px;
+      color: gray;
+      text-decoration: none;
+      transition: transform 0.3s ease;
+    }
+
+    .footer-social a:hover {
+      transform: scale(1.2);
+    }
+
+
+/* MENU ICONS */
+.menu-icon.mobile {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  font-size: 28px;
+  z-index: 1100;
+  display: none;
+  color: #5A6B9E;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+.menu-icon.mobile.open { transform: rotate(90deg); }
+.menu-icon.desktop {
+  font-size: 36px;
+  color: #fff;
+  margin-bottom: 20px;
+  display: block;
+  align-self: flex-start;
+}
+
+/* ===== AJUSTES MOBILE ===== */
+@media (max-width: 768px) {
+  .menu-icon.desktop { display: none; }
+  .menu-icon.mobile { display: block; }
+  .sidebar {
+    transform: translateX(100%);
+    width: 200px;
+  }
+  .sidebar.open { transform: translateX(0); }
+  nav a { font-size: 14px; }
+  .left-menu {
+    position: relative;
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 2px solid #ddd;
+    padding: 20px;
+  }
+  .content-box {
+    margin: 20px 10px 100px;
+    margin-top: 40px; /* menor topo no mobile */
+  }
+      footer {
+        width: 100%;
+        font-size: 13px;
+      }
+
+      .footer-container {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .footer-left {
+        margin-bottom: 12px;
+      }
+
+      .footer-center {
+        margin-bottom: 12px;
+      }
+
+      .footer-right {
+        margin-top: 8px;
+      }
+  .presentation {
+    flex-direction: column;
+    text-align: center;
+  }
+  .presentation img {
+    max-width: 90%;
+  }
+}
+
+/* TABS */
+.tabs { margin-top: 30px; }
+.tab-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.tab-buttons button {
+  flex: 1;
+  min-width: 150px;
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  background: #f8f8f8;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 8px 8px 0 0;
+  opacity: 75%;
+}
+.tab-buttons button.active {
+  background: #5A6B9E;
+  color: #fff;
+  border-color: #5A6B9E;
+}
+.tab-content {
+  border: 1px solid #ccc;
+  border-radius: 0 8px 8px 8px;
+  padding: 20px;
+  background: #f9f9f9;
+  margin-top: -1px;
+  font-size: 16px;
+  opacity: 75%;
+}
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
+  </style>
+</head>
+<body>
+  <!-- REMOVEMOS <div class="background-image"> -->
+
+  <!-- MENU LATERAL ESQUERDA -->
+  <div class="left-menu">
+    <h3>Serviços</h3>
+    <a href="locacaoambulancia.html">Locação de Ambulâncias</a>
+    <a href="gestaodepessoas.html">Gestão de Pessoas</a>
+    <a href="homecare.html">Homecare</a>
+  </div>
+
+  <div class="content-box">
+    <h1>Gestão de Pessoas</h1>
+    <p align="justify">Possuímos ampla experiência no fornecimento de mão de obra terceirizada para diversos segmentos. Nosso banco de dados altamente eficiente permite o recrutamento e a seleção de profissionais em grande quantidade e em prazos reduzidos para diferentes funções, abrangendo as áreas administrativa, operacional, logística e de serviços.
+<br><br>
+Todos os profissionais são rigorosamente treinados para desempenhar suas funções com excelência, incluindo recepcionistas, telefonistas, porteiros, vigias, agentes de portaria, auxiliares administrativos e auxiliares de serviços gerais.</p>
+    <br>
+    <div class="presentation">
+      <div class="presentation-text">
+        <p><strong>Apresentação Institucional</strong></p>
+        <p>Clique aqui e baixe nosso e-book de apresentação da nossa Empresa.</p>
+        <a href="Apresentação Institucional A4 - Tuise.pdf" class="download-btn" download>Download PDF</a>
+      </div>
+      <img src="2.png" width="100" height="100">
+    </div>
+
+    <div class="tabs">
+      <div class="tab-buttons">
+        <button class="active" data-tab="tipoA">RECRUTAMENTO</button>
+        <button data-tab="tipoB">MÃO DE OBRA TEMPORÁRIA</button>
+        <button data-tab="tipoC">MÃO DE OBRA EFETIVA</button>
+      </div>
+      <div class="tab-content">
+        <div id="tipoA" class="tab-pane active">
+          <p>🧑🏽‍⚕️
+Contamos com profissionais altamente capacitados, entre enfermeiros, médicos, fisioterapeutas, e outros especialistas.
+        </div>
+        <div id="tipoB" class="tab-pane">
+          <p>🕐 Soluções para atender demanda pontual ou sazonal de recursos humanos ou substituição de funcionários em férias, afastamento por motivos de saúde ou outras razões que recomendem o preenchimento temporário da função, sendo ideal para períodos que demandam uma necessidade extra de mão de obra.
+<br><br>Atuamos desde a seleção dos profissionais, realizando testes, dinâmicas de grupos, exames médicos, até a contratação, gestão e rescisão dos contratos de trabalho destes profissionais.
+A Lei 6.019/74 e o Decreto 73.841 garantem o respaldo legal a esta modalidade de contratação de pessoal, permitindo a contratação por um prazo máximo de 90 (noventa) dias, podendo ser prorrogado por igual período.</p>
+        </div>
+        <div id="tipoC" class="tab-pane">
+          <p>🧑🏻‍🏭 O fornecimento por terceiros de mão de obra efetiva, ou terceirização de mão de obra, foi legalizado pelo enunciado 331 do TST, e permite a toda e qualquer empresa, em princípio, terceirizar os serviços que não fazem parte de sua atividade fim, transferindo-os sem risco à execução de terceiros.  Esta modalidade de serviço permite ao cliente algumas vantagens importantes, como:
+<br><br>– Concentração de esforços na atividade fim, com aumento de eficiência e competitividade;<br><br>
+– Atuação e especialização da área de RH no recrutamento, seleção e gestão de pessoal para uma atividade fim, normalmente mais qualificado e com menor índice de absenteísmo e rotatividade;<br><br>
+– Redução de tempo e custos com a gestão de pessoal.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Ícone do menu MOBILE -->
+  <div class="menu-icon mobile" id="menu-toggle">&#9776;</div>
+
+  <!-- SIDEBAR DIREITA -->
+  <div class="sidebar" id="sidebar">
+    <div class="menu-icon desktop">&#9776;</div>
+    <nav>
+      <a href="inicio.html">Início ></a>
+      <a href="index.html">Home ></a>
+      <a href="sobre.html">A Empresa ></a>
+      <a href="areadelogin.html">Área de Login ></a>
+      <a href="telepsicologia.html">Telepsicologia ></a>
+      <a href="canaldamulher.html">Canal da Mulher ></a>
+      <a href="http://localhost/projeto-login/noticias.php">Notícias ></a>
+      <a href="servicos.html">Nossos Serviços ></a>
+      <a href="trabalheconosco.html">Trabalhe Conosco ></a>
+      <a href="contato.html">Entre em Contato ></a>
+    </nav>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-container">
+      <!-- Coluna esquerda -->
+      <div class="footer-left">
+        <p class="footer-text">I.AGRO SOLUÇÕES DIGITAIS EM AGRONEGÓCIO LTDA</p>
+        <p class="cnpj" style="color: gray">CNPJ 53.864.715/0001-05</p>
+      </div>
+
+      <!-- Coluna central -->
+      <div class="footer-center">
+        <p class="footer-text">Rua Califórnia, Nº 81, Penha - RJ</p>
+        <p class="cnpj" style="color: gray">Telefone: +55 (24) 2263-9135</p>
+        <p class="footer-text">Horário: 08:00 – 17:00 (Segunda a Sexta)</p>
+      </div>
+
+      <!-- Coluna direita -->
+      <div class="footer-right footer-social">
+        <a href="https://wa.me/552422639135" aria-label="WhatsApp"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-whatsapp" viewBox="0 0 16 16">
+  <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
+</svg></a>
+        <a href="https://www.instagram.com/tuisegestaointegrada/" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-instagram" viewBox="0 0 16 16">
+  <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92m-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217m0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334"/>
+</svg></a>
+        <a href="https://www.linkedin.com/in/tuise-gest%C3%A3o-integrada-017ba0372/" aria-label="LinkedIn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-linkedin" viewBox="0 0 16 16">
+  <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/>
+</svg></a>
+        <a href="mailto:enfermagem.tuise@outlook.com" aria-label="E-mail"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
+  <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z"/>
+</svg></a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const toggle = document.getElementById('menu-toggle');
+    const sidebar = document.getElementById('sidebar');
+    toggle.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+      toggle.classList.toggle('open');
+      toggle.innerHTML = sidebar.classList.contains('open') ? '&#10005;' : '&#9776;';
+    });
+
+    const tabButtons = document.querySelectorAll('.tab-buttons button');
+    const tabPanes = document.querySelectorAll('.tab-pane');
+    tabButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabButtons.forEach(b => b.classList.remove('active'));
+        tabPanes.forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.tab).classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
